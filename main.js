@@ -32,10 +32,9 @@ async function loadSights(url) {
         attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>"
     }).addTo(map);
 }
-loadSights("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:SEHENSWUERDIGOGD&srsName=EPSG:4326&outputFormat=json");
 
-//Kraftfahrtlinien 
-async function loadSights(url) {
+//Touristische Kraftfahrtlinien Liniennetz Vienna
+async function loadLines(url) {
     //console.log(url);
     let response = await fetch(url); 
     let jsondata = await response.json();
@@ -44,10 +43,10 @@ L.geoJSON(jsondata, {
     attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>"
 }).addTo(map);
 }
-loadSights("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKLINIEVSLOGD&srsName=EPSG:4326&outputFormat=json");
+
 
 //Haltestellen
-async function loadSights(url) {
+async function loadStops(url) {
     //console.log(url);
     let response = await fetch(url); 
     let jsondata = await response.json();
@@ -56,10 +55,10 @@ L.geoJSON(jsondata, {
     attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>"
 }).addTo(map);
 }
-loadSights("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKHTSVSLOGD&srsName=EPSG:4326&outputFormat=json"); 
+
 
 //Fußgängerzonen 
-async function loadSights(url) {
+async function loadZones(url) {
     //console.log(url);
     let response = await fetch(url); 
     let jsondata = await response.json();
@@ -68,4 +67,9 @@ L.geoJSON(jsondata, {
     attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>"
 }).addTo(map);
 }
-loadSights("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:FUSSGEHERZONEOGD&srsName=EPSG:4326&outputFormat=json");
+
+// GeoJSON ladun und visualisieren
+loadSights("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:SEHENSWUERDIGOGD&srsName=EPSG:4326&outputFormat=json");
+loadLines("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKLINIEVSLOGD&srsName=EPSG:4326&outputFormat=json");
+loadStops("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKHTSVSLOGD&srsName=EPSG:4326&outputFormat=json"); 
+loadZones("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:FUSSGEHERZONEOGD&srsName=EPSG:4326&outputFormat=json");
