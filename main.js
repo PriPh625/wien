@@ -62,7 +62,7 @@ async function loadLines(url) {
     L.geoJSON(jsondata, {
         attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>",
         style: function (feature) {
-            console.log(feature.properties.LINE_NAME);
+            console.log(feature.properties);
             let lineColor;
 
             if (feature.properties.LINE_NAME == "Yellow Line") {
@@ -82,7 +82,7 @@ async function loadLines(url) {
             }
         
             return {
-            color: lineColor
+                 color: lineColor
         }
     }
     }).addTo(overlays.lines);
