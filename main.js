@@ -22,13 +22,13 @@ let overlays = {
 
 // Layercontrol
 L.control.layers({
-    "BasemapAT":L.tileLayer.provider('BasemapAT.basemap').addTo(map),
-    "BasemapAT grau":L.tileLayer.provider('BasemapAT.grau').addTo(map), 
-    "BasemapAT overlay":L.tileLayer.provider('BasemapAT.overlay').addTo(map),
-    "BasemapAT Relief":L.tileLayer.provider('BasemapAT.terrain').addTo(map),
-    "BasemapAT Oberfläche":L.tileLayer.provider('BasemapAT.surface').addTo(map),
-    "BasemapAT highdpi":L.tileLayer.provider('BasemapAT.highdpi').addTo(map),
-    "BasemapAT Orthofoto":L.tileLayer.provider('BasemapAT.orthofoto').addTo(map),
+    "BasemapAT": L.tileLayer.provider('BasemapAT.basemap').addTo(map),
+    "BasemapAT grau": L.tileLayer.provider('BasemapAT.grau').addTo(map),
+    "BasemapAT overlay": L.tileLayer.provider('BasemapAT.overlay').addTo(map),
+    "BasemapAT Relief": L.tileLayer.provider('BasemapAT.terrain').addTo(map),
+    "BasemapAT Oberfläche": L.tileLayer.provider('BasemapAT.surface').addTo(map),
+    "BasemapAT highdpi": L.tileLayer.provider('BasemapAT.highdpi').addTo(map),
+    "BasemapAT Orthofoto": L.tileLayer.provider('BasemapAT.orthofoto').addTo(map),
 }, {
     "Sehenswürdigkeiten": overlays.sights,
     "Vienna sightseeing Linien": overlays.lines,
@@ -60,7 +60,31 @@ async function loadLines(url) {
     let jsondata = await response.json();
     //  console.log(jsondata);
     L.geoJSON(jsondata, {
-        attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>"
+        attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>",
+        style: function (feature) {
+            console.log(feature.properties.LINE_NAME);
+            let lineColor;
+
+            if (feature.properties.LINE_NAME == "Yellow Line") {
+                lineColor = "#FFDC00";
+            } else if (feature.properties.LINE_NAME == "Blue Line") {
+                lineColor = "#0074D9";
+            } else if (feature.properties.LINE_NAME == "Red Line") {
+                lineColor = "#FF4136";
+            } else if (feature.properties.LINE_NAME == "Green Line") {
+                lineColor = "#2ECC40";
+            } else if (feature.properties.LINE_NAME == "Grey Line") {
+                lineColor = "#AAAAAA";
+            } else if (feature.properties.LINE_NAME == "Orange Line") {
+                lineColor = "#FF851B";
+            } else {
+                lineColor = "#111111";
+            }
+        
+            return {
+            color: lineColor
+        }
+    }
     }).addTo(overlays.lines);
 }
 
