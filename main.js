@@ -116,7 +116,7 @@ async function loadStops(url) {
                     popupAnchor: [0, -37]
                 })
             });
-            
+
         }
     }).addTo(overlays.stops);
 }
