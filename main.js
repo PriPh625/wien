@@ -50,7 +50,7 @@ async function loadSights(url) {
     //  console.log(jsondata);
     L.geoJSON(jsondata, {
         attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>",
-        pointToLayer: function(feature, latlng) {
+        pointToLayer: function (feature, latlng) {
             return L.marker(latlng, {
                 icon: L.icon({
                     iconUrl: "icons/photo.png",
@@ -89,11 +89,11 @@ async function loadLines(url) {
             } else {
                 lineColor = "#111111";
             }
-        
+
             return {
-                 color: lineColor
+                color: lineColor
+            }
         }
-    }
     }).addTo(overlays.lines);
 }
 
@@ -105,7 +105,19 @@ async function loadStops(url) {
     let jsondata = await response.json();
     //  console.log(jsondata);
     L.geoJSON(jsondata, {
-        attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>"
+        attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>",
+        pointToLayer: function (feature, latlng) {
+            console.log(feature.properties);
+
+            return L.marker(latlng, {
+                icon: L.icon({
+                    iconUrl: `icons/bus_${feature.properties.LINE_ID}.png`,
+                    iconAnchor: [16, 37],
+                    popupAnchor: [0, -37]
+                })
+            });
+            
+        }
     }).addTo(overlays.stops);
 }
 
@@ -138,32 +150,32 @@ async function loadHotels(url) {
     //  console.log(jsondata);
     L.geoJSON(jsondata, {
         attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>",
-        pointToLayer: function(feature, latlng) {
+        pointToLayer: function (feature, latlng) {
             //console.log(feature.properties.KATEGORIE_TXT);
             let iconName;
 
             if (feature.properties.KATEGORIE_TXT == "1*") {
                 iconName = "hotel_1stars.png";
-            }else if (feature.properties.KATEGORIE_TXT == "2*") {
+            } else if (feature.properties.KATEGORIE_TXT == "2*") {
                 iconName = "hotel_2stars.png";
-                }else if (feature.properties.KATEGORIE_TXT == "3*") {
+            } else if (feature.properties.KATEGORIE_TXT == "3*") {
                 iconName = "hotel_3stars.png";
-                }else if (feature.properties.KATEGORIE_TXT == "4*") {
+            } else if (feature.properties.KATEGORIE_TXT == "4*") {
                 iconName = "hotel_4stars.png";
-                }else if (feature.properties.KATEGORIE_TXT == "5*") {
+            } else if (feature.properties.KATEGORIE_TXT == "5*") {
                 iconName = "hotel_5stars.png";
-                } else {
-                    iconName = "hotel_0stars.png";
-                }
-                //console.log(iconName);
+            } else {
+                iconName = "hotel_0stars.png";
+            }
+            //console.log(iconName);
 
-                return L.marker(latlng, {
-                    icon: L.icon({
-                        iconUrl: `icons/${iconName}`,
-                        iconAnchor: [16, 37],
-                        popupAnchor: [0, -37]
-                    })
-                });
+            return L.marker(latlng, {
+                icon: L.icon({
+                    iconUrl: `icons/${iconName}`,
+                    iconAnchor: [16, 37],
+                    popupAnchor: [0, -37]
+                })
+            });
         }
     }).addTo(overlays.hotels);
 }
