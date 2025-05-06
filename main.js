@@ -108,9 +108,9 @@ async function loadLines(url) {
             }
         },
         onEachFeature:
-        function (feature, layer) {
+            function (feature, layer) {
 
-            layer.bindPopup(`
+                layer.bindPopup(`
 
                 <h4> <i class="fa-solid fa-bus"></i> 
                 ${feature.properties.LINE_NAME}</h4>
@@ -123,12 +123,12 @@ async function loadLines(url) {
                 <i class="fa-regular fa-circle-dot"></i> <end>${feature.properties.TO_NAME}</end>
                 
                 `);
-                
-                }
-                
-                }).addTo(overlays.lines);
-                
-                };
+
+            }
+
+    }).addTo(overlays.lines);
+
+};
 
 
 // Haltestellen
@@ -154,12 +154,18 @@ async function loadStops(url) {
         onEachFeature: function (feature, layer) {
 
             layer.bindPopup(`
-                <h4>${feature.properties.LINE_NAME}</h4>
+
+                <h4> <i class="fa-solid fa-bus"></i> 
+                ${feature.properties.LINE_NAME}</h4>
                 <address>${feature.properties.STAT_NAME}</address>
-            `);
+                
+                `);
+
         }
+
     }).addTo(overlays.stops);
-}
+
+};
 
 
 // Fußgängerzonen 
@@ -181,15 +187,23 @@ async function loadZones(url) {
         },
         onEachFeature: function (feature, layer) {
             layer.bindPopup(`
-                <h4>Fußgängerzone</h4>
-                <b>${feature.properties.ADRESSE}</b><br>
-                <address>${feature.properties.STAT_NAME}</address>
-                <i class="fa-regular fa-clock"></i> ${feature.properties.ZEITRAUM}<br>
-                <i class="fa-solid fa-box"></i> ${feature.properties.AUSNAHME_TXT}
-            `);
+
+                <address>${feature.properties.ADRESSE}</address>
+                
+                <i class="fa-regular fa-clock"></i> <time>${feature.properties.ZEITRAUM}</time>
+                 <br> 
+                
+                <i class="fa-solid fa-circle-info"></i> <text>${feature.properties.AUSN_TEXT}</text>
+                
+                `);
+
+
+
         }
+
     }).addTo(overlays.zones);
-}
+
+};
 
 // Hotels und Unterkünfte Standorte Wien
 async function loadHotels(url) {
