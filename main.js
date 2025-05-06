@@ -19,7 +19,7 @@ let overlays = {
     lines: L.featureGroup().addTo(map),
     stops: L.featureGroup().addTo(map),
     zones: L.featureGroup().addTo(map),
-    hotels:L.markerClusterGroup({
+    hotels: L.markerClusterGroup({
         disableClusterAtZoom: 17
     }).addTo(map),
 }
@@ -62,8 +62,8 @@ async function loadSights(url) {
                     popupAnchor: [0, -37]
                 })
             });
-        }, 
-        onEachFeature: function(feature, layer) {
+        },
+        onEachFeature: function (feature, layer) {
             console.log(feature.properties);
             layer.bindPopup(`
                 <img src="${feature.properties.THUMBNAIL}" alt="*">
@@ -75,40 +75,60 @@ async function loadSights(url) {
     }).addTo(overlays.sights);
 }
 
-//Touristische Kraftfahrtlinien Liniennetz Vienna
+// Touristische Kraftfahrlinien Liniennetz
 async function loadLines(url) {
     //console.log(url);
     let response = await fetch(url);
     let jsondata = await response.json();
-    //  console.log(jsondata);
+    //console.log(jsondata);
     L.geoJSON(jsondata, {
         attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>",
         style: function (feature) {
-            //console.log(feature.properties);
+            // console.log(feature.properties);
             let lineColor;
 
             if (feature.properties.LINE_NAME == "Yellow Line") {
                 lineColor = "#FFDC00";
             } else if (feature.properties.LINE_NAME == "Blue Line") {
                 lineColor = "#0074D9";
-            } else if (feature.properties.LINE_NAME == "Red Line") {
-                lineColor = "#FF4136";
             } else if (feature.properties.LINE_NAME == "Green Line") {
                 lineColor = "#2ECC40";
             } else if (feature.properties.LINE_NAME == "Grey Line") {
                 lineColor = "#AAAAAA";
+            } else if (feature.properties.LINE_NAME == "Red Line") {
+                lineColor = "#FF4136";
             } else if (feature.properties.LINE_NAME == "Orange Line") {
                 lineColor = "#FF851B";
             } else {
-                lineColor = "#111111";
+                lineColor == "#111111";
             }
 
             return {
                 color: lineColor
             }
-        }
-    }).addTo(overlays.lines);
-}
+        },
+        onEachFeature:
+        function (feature, layer) {
+
+            layer.bindPopup(`
+
+                <h4> <i class="fa-solid fa-bus"></i> 
+                ${feature.properties.LINE_NAME}</h4>
+                
+                <i class="fa-regular fa-circle-dot"></i> <start>${feature.properties.FROM_NAME}</start>
+                 <br>
+                
+                <i class="fa-solid fa-route"></i> <br>
+                
+                <i class="fa-regular fa-circle-dot"></i> <end>${feature.properties.TO_NAME}</end>
+                
+                `);
+                
+                }
+                
+                }).addTo(overlays.lines);
+                
+                };
 
 
 // Haltestellen
@@ -120,7 +140,7 @@ async function loadStops(url) {
     L.geoJSON(jsondata, {
         attribution: "Datenquelle: <a href='https://data.wien.gv.at'>Stadt Wien</a>",
         pointToLayer: function (feature, latlng) {
-            //console.log(feature.properties);
+            // console.log(feature.properties);
 
             return L.marker(latlng, {
                 icon: L.icon({
@@ -130,6 +150,13 @@ async function loadStops(url) {
                 })
             });
 
+        },
+        onEachFeature: function (feature, layer) {
+
+            layer.bindPopup(`
+                <h4>${feature.properties.LINE_NAME}</h4>
+                <address>${feature.properties.STAT_NAME}</address>
+            `);
         }
     }).addTo(overlays.stops);
 }
@@ -151,6 +178,15 @@ async function loadZones(url) {
                 opacity: 0.4,
                 fillOpacity: 0.1,
             }
+        },
+        onEachFeature: function (feature, layer) {
+            layer.bindPopup(`
+                <h4>Fußgängerzone</h4>
+                <b>${feature.properties.ADRESSE}</b><br>
+                <address>${feature.properties.STAT_NAME}</address>
+                <i class="fa-regular fa-clock"></i> ${feature.properties.ZEITRAUM}<br>
+                <i class="fa-solid fa-box"></i> ${feature.properties.AUSNAHME_TXT}
+            `);
         }
     }).addTo(overlays.zones);
 }
@@ -189,6 +225,15 @@ async function loadHotels(url) {
                     popupAnchor: [0, -37]
                 })
             });
+        },
+        onEachFeature: function (feature, layer) {
+            layer.bindPopup(`
+                <b>${feature.properties.BETRIEB}</b> (${feature.properties.KATEGORIE_TXT})<br>
+                <i class="fa-solid fa-location-dot"></i> ${feature.properties.ADRESSE}<br>
+                <i class="fa-solid fa-phone"></i> <a href="tel:${feature.properties.KONTAKT_TEL}">${feature.properties.KONTAKT_TEL}</a><br>
+                <i class="fa-solid fa-envelope"></i> <a href="mailto:${feature.properties.KONTAKT_EMAIL}">${feature.properties.KONTAKT_EMAIL}</a><br>
+                <a href="${feature.properties.WEITERE_INFOS}" target="wien">Homepage</a>
+            `);
         }
     }).addTo(overlays.hotels);
 }
